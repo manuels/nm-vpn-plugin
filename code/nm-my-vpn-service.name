@@ -1,0 +1,14 @@
+[VPN Connection]
+name=my-vpn
+service=org.freedesktop.NetworkManager.my-vpn
+program=/bin/bash
+supports-multiple-connections=true
+
+[libnm]
+plugin=/home/manuel/Projects/nm-vpn-plugin/code/libmy-vpn-editor-plugin.so
+
+[GNOME]
+auth-dialog=/bin/bash
+properties=/tmp/libnm-openvpn-properties
+supports-external-ui-mode=true
+supports-hints=true
