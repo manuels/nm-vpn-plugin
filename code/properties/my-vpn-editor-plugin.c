@@ -1,3 +1,4 @@
+
 #include "nm-default.h"
 
 #ifdef NM_VPN_OLD

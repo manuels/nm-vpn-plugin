@@ -91,6 +91,30 @@ stuff_changed_cb (GtkWidget *widget, gpointer user_data)
 	g_signal_emit_by_name (MY_VPN_EDITOR (user_data), "changed");
 }
 
+NMVpnEditor *my_vpn_editor_new (NMConnection *connection, GError **error) {
+	MyVpnEditor *object = g_object_new (MY_VPN_TYPE_EDITOR, NULL);
+	MyVpnEditorPrivate *priv;
+
+	if (!object) {
+		g_set_error_literal (error, NM_CONNECTION_ERROR, 0, _("could not create my-vpn object"));
+		return NULL;
+	}
+
+	priv = MY_VPN_EDITOR_GET_PRIVATE (object);
+	priv->builder = gtk_builder_new_from_file ("/home/manuel/Projects/nm-vpn-plugin/code/properties/my-vpn-editor.ui");
+
+
+	priv->widget = GTK_WIDGET (gtk_builder_get_object (priv->builder, "my-vpn-vbox"));
+	if (!priv->widget) {
+		g_set_error_literal (error, NM_CONNECTION_ERROR, 0, _("could not load UI widget"));
+		g_object_unref (object);
+		g_return_val_if_reached (NULL);
+	}
+	g_object_ref_sink (priv->widget);
+
+	return (NMVpnEditor*) object;
+}
+
 G_MODULE_EXPORT NMVpnEditor *
 nm_vpn_editor_factory_my_vpn (NMVpnEditorPlugin *editor_plugin,
                               NMConnection *connection,
